@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Mi IP",
+  "version": "1.0.0",
+  "description": "Muestra tu IP pública al instante, con un botón para copiarla.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Ver mi IP",
+    "default_icon": "icons/icono.png"
+  },
+  "icons": {
+    "128": "icons/icono.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://api.ipify.org/"
+  ]
+}
