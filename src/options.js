@@ -1,4 +1,3 @@
-// options.js — Guardar / leer / borrar credenciales en storage.local.
 import { DEFAULT_SCAMALYTICS_HOST, isValidScamalyticsHost } from "./api.js";
 
 const usernameEl = document.getElementById("username");
@@ -8,7 +7,6 @@ const statusEl = document.getElementById("status");
 
 hostEl.placeholder = DEFAULT_SCAMALYTICS_HOST;
 
-// Cargar lo guardado al abrir
 chrome.storage.local.get(["username", "apiKey", "host"], (d) => {
   usernameEl.value = d.username || "";
   apiKeyEl.value = d.apiKey || "";

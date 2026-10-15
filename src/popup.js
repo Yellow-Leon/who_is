@@ -1,4 +1,3 @@
-// popup.js — Orquesta la UI del popup. Módulo ES (importa api.js).
 import { fetchBasic, datacenterHint, fetchScamalytics } from "./api.js";
 
 const ipEl = document.getElementById("ip");
@@ -16,7 +15,6 @@ init();
 async function init() {
   showLastSeen();
 
-  // 1. Capa C: IP + geo + ISP (siempre)
   try {
     const basic = await fetchBasic();
     currentIp = basic.ip;
@@ -43,19 +41,16 @@ async function init() {
     ipEl.textContent = "No se pudo obtener la IP";
     ipEl.classList.add("error");
     copyBtn.disabled = true;
-    return; // sin IP no tiene sentido seguir con la capa B
+    return; 
   }
 
-  // 2. Capa B: score de fraude, solo si hay credenciales guardadas
   const creds = await getCreds();
   if (creds.apiKey && creds.username) {
     await loadRisk(creds, currentIp);
   }
 }
 
-// --- Capa B ---
-// Se construye con textContent (no innerHTML): "risk" y los mensajes de
-// error vienen de una API externa y no deben interpretarse como HTML.
+
 async function loadRisk(creds, ip) {
   riskBody.replaceChildren(el("span", "loading", "Consultando…"));
   try {
@@ -82,7 +77,6 @@ function el(tag, className, text) {
   return node;
 }
 
-// --- Botón copiar ---
 copyBtn.addEventListener("click", async () => {
   if (!currentIp) return;
   await navigator.clipboard.writeText(currentIp);
@@ -92,13 +86,11 @@ copyBtn.addEventListener("click", async () => {
   setTimeout(() => (copyBtn.textContent = original), 1200);
 });
 
-// --- Enlace a opciones ---
 openOptions.addEventListener("click", (e) => {
   e.preventDefault();
   chrome.runtime.openOptionsPage();
 });
 
-// --- Última IP vista ---
 function showLastSeen() {
   chrome.storage.local.get(["lastIp", "lastSeen"], (data) => {
     if (!data.lastIp) return;
@@ -107,7 +99,6 @@ function showLastSeen() {
   });
 }
 
-// --- Helper: leer credenciales de storage.local ---
 function getCreds() {
   return new Promise((resolve) => {
     chrome.storage.local.get(["username", "apiKey", "host"], (d) => {

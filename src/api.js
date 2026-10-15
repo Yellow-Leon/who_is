@@ -1,12 +1,6 @@
-// api.js — Lógica de llamadas. Separa la capa gratis (C) de la pro (B).
-// Se importa como módulo ES desde popup.js.
 
-// ---------------------------------------------------------------------------
-// CAPA C (gratis, sin key): IP pública + geolocalización + ISP
-// Fuente: ipapi.co (sin registro). Devuelve país, ciudad, región e ISP/org.
-// ipapi.co limita las peticiones gratuitas; si falla, se recurre a ipify
-// (la fuente original del proyecto) para al menos mostrar la IP.
-// ---------------------------------------------------------------------------
+
+
 export async function fetchBasic() {
   try {
     return await fetchIpapi();
@@ -21,7 +15,6 @@ async function fetchIpapi() {
   if (!res.ok) throw new Error(`ipapi HTTP ${res.status}`);
 
   const d = await res.json();
-  // ipapi marca error con la propiedad "error": true
   if (d.error) throw new Error(d.reason || "ipapi error");
 
   return {
@@ -30,7 +23,7 @@ async function fetchIpapi() {
     region: d.region,
     country: d.country_name,
     countryCode: d.country_code,
-    isp: d.org, // nombre de la red / operador
+    isp: d.org, 
   };
 }
 
@@ -42,10 +35,7 @@ async function fetchIpify() {
   return data.ip;
 }
 
-// Heurística LOCAL y gratuita: ¿el ISP parece un datacenter/hosting?
-// NO es detección de VPN de verdad — es solo una pista basada en el nombre
-// del operador. Un datacenter suele indicar servidor/VPN/proxy, pero da
-// falsos positivos. Se muestra etiquetada como "pista", no como veredicto.
+
 const DATACENTER_HINTS = [
   "ovh", "digitalocean", "digital ocean", "amazon", "aws", "google cloud",
   "gcp", "microsoft", "azure", "hetzner", "linode", "vultr", "contabo",
@@ -59,16 +49,9 @@ export function datacenterHint(isp) {
   return DATACENTER_HINTS.some((h) => lower.includes(h));
 }
 
-// ---------------------------------------------------------------------------
-// CAPA B (pro, con key del usuario): score de fraude vía Scamalytics
-// Endpoint documentado: https://apiXX.scamalytics.com/v3/{usuario}?key=...&ip=...
-// El host (api11, api12, …) y el formato EXACTO dependen de la cuenta, así que
-// el parseo es defensivo: busca el score en varias rutas posibles.
-// ---------------------------------------------------------------------------
 export const DEFAULT_SCAMALYTICS_HOST = "api11.scamalytics.com";
 
-// Solo se aceptan subdominios de scamalytics.com: es lo único que cubre
-// host_permissions, y evita enviar la API key a un servidor cualquiera.
+
 export function isValidScamalyticsHost(host) {
   return /^[a-z0-9-]+\.scamalytics\.com$/i.test(host);
 }
@@ -90,10 +73,8 @@ export async function fetchScamalytics({ username, apiKey, host, ip }) {
 
   const raw = await res.json();
 
-  // Parseo tolerante: el JSON suele venir anidado bajo "scamalytics".
   const s = raw.scamalytics || raw;
 
-  // La API responde 200 con status "error" ante key/usuario incorrectos.
   if (s.status === "error") {
     throw new Error(s.error || "Scamalytics devolvió un error");
   }
@@ -104,8 +85,6 @@ export async function fetchScamalytics({ username, apiKey, host, ip }) {
     firstDefined(s.scamalytics_risk, s.risk, raw.risk);
 
   if (score === undefined) {
-    // Si llega aquí, el formato de TU cuenta no coincide con lo esperado.
-    // Revisa 'raw' en la consola y ajusta las rutas de arriba.
     console.warn("Scamalytics: respuesta no reconocida", raw);
     throw new Error("Formato de respuesta no reconocido");
   }
