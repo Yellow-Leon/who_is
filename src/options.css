@@ -1,0 +1,53 @@
+/* Reutiliza las variables y estilos base de popup.css */
+
+body {
+  width: auto;
+  max-width: 420px;
+}
+
+.container {
+  align-items: stretch;
+}
+
+.help {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+input {
+  padding: 6px 8px;
+  border: 1px solid #45475a;
+  border-radius: 6px;
+  background: #181825;
+  color: var(--fg);
+  font-size: 13px;
+  font-family: ui-monospace, "Cascadia Code", monospace;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-secondary {
+  background: #45475a;
+  color: var(--fg);
+}
+
+.last.error {
+  color: #f38ba8;
+}

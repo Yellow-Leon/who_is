@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Mi IP",
-  "version": "1.0.0",
-  "description": "Muestra tu IP pública al instante, con un botón para copiarla.",
+  "version": "1.1.0",
+  "description": "Muestra tu IP pública, su ubicación y operador, con un botón para copiarla y score de fraude opcional.",
   "action": {
     "default_popup": "popup.html",
     "default_title": "Ver mi IP",
@@ -11,10 +11,16 @@
   "icons": {
     "128": "icons/icono.png"
   },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
   "permissions": [
     "storage"
   ],
   "host_permissions": [
-    "https://api.ipify.org/"
+    "https://ipapi.co/",
+    "https://api.ipify.org/",
+    "https://*.scamalytics.com/"
   ]
 }

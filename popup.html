@@ -10,11 +10,24 @@
 
     <div id="ip" class="ip" aria-live="polite">Cargando…</div>
 
+    <div id="geo" class="geo"></div>
+
+    <div id="hint" class="hint"></div>
+
     <button id="copy" class="btn" disabled>Copiar</button>
 
+    <section class="risk">
+      <h2>Riesgo de fraude</h2>
+      <div id="risk-body" class="risk-body" aria-live="polite">
+        <span class="loading">Configura Scamalytics en opciones</span>
+      </div>
+    </section>
+
     <div id="last" class="last"></div>
+
+    <a href="#" id="open-options" class="link">Opciones</a>
   </div>
 
-  <script src="src/popup.js"></script>
+  <script type="module" src="src/popup.js"></script>
 </body>
 </html>

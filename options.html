@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="src/popup.css">
+  <link rel="stylesheet" href="src/options.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Scamalytics (opcional)</h1>
+
+    <p class="help">
+      Con una cuenta de Scamalytics, el popup muestra el score de fraude de tu IP.
+      Las credenciales se guardan solo en este navegador.
+    </p>
+
+    <label>
+      Usuario
+      <input id="username" type="text" autocomplete="off">
+    </label>
+
+    <label>
+      API key
+      <input id="apiKey" type="password" autocomplete="off">
+    </label>
+
+    <label>
+      Host
+      <input id="host" type="text" autocomplete="off">
+    </label>
+
+    <div class="actions">
+      <button id="save" class="btn">Guardar</button>
+      <button id="clear" class="btn btn-secondary">Borrar</button>
+    </div>
+
+    <div id="status" class="last" aria-live="polite"></div>
+  </div>
+
+  <script type="module" src="src/options.js"></script>
+</body>
+</html>
